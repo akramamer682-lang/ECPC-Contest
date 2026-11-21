@@ -1161,7 +1161,7 @@ footer p span {
     </div>
     <div class="hero-quick-stats">
       <div class="hero-stat-item">
-        <div class="hero-stat-num" id="heroTotal">10</div>
+        <div class="hero-stat-num" id="heroTotal">13</div>
         <div class="hero-stat-label">Total Problems</div>
       </div>
       <div class="hero-stat-item">
@@ -1169,7 +1169,7 @@ footer p span {
         <div class="hero-stat-label">Solved</div>
       </div>
       <div class="hero-stat-item">
-        <div class="hero-stat-num" id="heroRemaining">10</div>
+        <div class="hero-stat-num" id="heroRemaining">13</div>
         <div class="hero-stat-label">Remaining</div>
       </div>
     </div>
@@ -1194,7 +1194,7 @@ footer p span {
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-card-icon">📋</div>
-        <div class="stat-card-val" id="statCardTotal">10</div>
+        <div class="stat-card-val" id="statCardTotal">13</div>
         <div class="stat-card-label">Total Problems</div>
       </div>
       <div class="stat-card">
@@ -1344,7 +1344,7 @@ footer p span {
 <!-- FOOTER -->
 <footer>
   <div class="container">
-    <p>SGU <span>Competitive Programming</span> Solutions Platform &copy; 2024</p>
+    <p>SGU <span>Competitive Programming</span> Solutions Platform &copy; 2026</p>
     <p style="margin-top:0.4rem; font-size:0.85rem;">Designed with a strict Black, Red &amp; White visual identity.</p>
   </div>
 </footer>
@@ -1915,6 +1915,7 @@ const state = {
   solvedSet: new Set(JSON.parse(localStorage.getItem('sgu_cp_solved') || '[]')),
   currentProblemId: null
 };
+window.state = state;
 
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', () => {
@@ -2136,8 +2137,8 @@ function updateProgressStats() {
   document.getElementById('heroTotal').textContent = total;
   document.getElementById('heroSolved').textContent = solved;
   document.getElementById('heroRemaining').textContent = remaining;
-  document.getElementById('heroProgressBar').style.width = pct + '%%';
-  document.getElementById('heroProgressPct').textContent = pct + '%%';
+  document.getElementById('heroProgressBar').style.width = pct + '%';
+  document.getElementById('heroProgressPct').textContent = pct + '%';
 
   document.getElementById('statCardTotal').textContent = total;
   document.getElementById('statCardSolved').textContent = solved;
