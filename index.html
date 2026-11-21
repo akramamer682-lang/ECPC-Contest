@@ -1,0 +1,2435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SGU Competitive Programming Contest — Official Solutions & Practice</title>
+<style>
+/* ===== DESIGN SYSTEM: STRICT BLACK, RED & WHITE IDENTITY ===== */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --black: #000000;
+  --dark-bg: #050505;
+  --card-bg: #101010;
+  --card-hover: #181818;
+  --border: #222222;
+  --border-focus: #E50914;
+  --red: #E50914;
+  --red-hover: #ff1e2b;
+  --red-dark: #8a050c;
+  --red-glow: rgba(229, 9, 20, 0.25);
+  --red-subtle: rgba(229, 9, 20, 0.12);
+  --white: #FFFFFF;
+  --text-muted: #888888;
+  --text-dim: #555555;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  background-color: var(--black);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--black);
+  color: var(--white);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+a {
+  color: var(--white);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+a:hover {
+  color: var(--red);
+}
+
+button {
+  font-family: inherit;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--black);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 5px;
+  border: 2px solid var(--black);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--red);
+}
+
+/* ===== NAVIGATION BAR ===== */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background: rgba(0, 0, 0, 0.94);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+  border-bottom-color: var(--red);
+  box-shadow: 0 4px 25px rgba(229, 9, 20, 0.2);
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.nav-logo-badge {
+  background: var(--red);
+  color: var(--white);
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  font-weight: 900;
+  font-size: 1.05rem;
+  box-shadow: 0 0 15px var(--red-glow);
+  letter-spacing: 0.5px;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 1.8rem;
+  align-items: center;
+}
+
+.nav-links a {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  padding: 0.5rem 0;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--white);
+}
+
+.nav-links a.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--red);
+  box-shadow: 0 0 8px var(--red);
+}
+
+.mobile-toggle {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--white);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+/* ===== CONTAINER & BUTTONS ===== */
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.6rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border: none;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--red);
+  color: var(--white);
+  box-shadow: 0 4px 15px var(--red-glow);
+}
+
+.btn-primary:hover {
+  background: var(--red-hover);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(229, 9, 20, 0.45);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--white);
+  border: 1.5px solid var(--border);
+}
+
+.btn-outline:hover {
+  border-color: var(--red);
+  color: var(--red);
+  background: var(--red-subtle);
+  transform: translateY(-2px);
+}
+
+.btn-sm {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.82rem;
+  border-radius: 6px;
+}
+
+/* ===== HERO SECTION ===== */
+.hero {
+  padding: 150px 1.5rem 70px;
+  text-align: center;
+  position: relative;
+  background: radial-gradient(circle at 50% 20%, rgba(229, 9, 20, 0.16) 0%, rgba(0, 0, 0, 0.95) 75%);
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  background: var(--red-subtle);
+  border: 1px solid var(--red);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.hero h1 {
+  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -1.5px;
+  margin-bottom: 1.2rem;
+}
+
+.hero h1 span {
+  color: var(--red);
+  text-shadow: 0 0 35px var(--red-glow);
+}
+
+.hero-subtitle {
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  color: var(--text-muted);
+  max-width: 720px;
+  margin: 0 auto 2.5rem;
+  font-weight: 400;
+}
+
+.hero-progress-box {
+  max-width: 550px;
+  margin: 0 auto 2.5rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  border-radius: 14px;
+}
+
+.hero-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.progress-track {
+  height: 10px;
+  background: #1c1c1c;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--red-dark), var(--red));
+  border-radius: 6px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 12px var(--red);
+}
+
+.hero-quick-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1.2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.hero-stat-item {
+  text-align: center;
+}
+
+.hero-stat-num {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+}
+
+.hero-stat-num.highlight {
+  color: var(--red);
+}
+
+.hero-stat-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  margin-top: 0.35rem;
+}
+
+/* ===== SECTION HEADERS ===== */
+section {
+  padding: 5rem 0;
+}
+
+.section-head {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-tag {
+  color: var(--red);
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.section-title {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  margin-bottom: 0.6rem;
+}
+
+.section-title span {
+  color: var(--red);
+}
+
+.section-desc {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+/* ===== STATS DASHBOARD CARDS ===== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.stat-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.6rem 1.4rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card:hover {
+  border-color: var(--red);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(229, 9, 20, 0.15);
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--red);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.stat-card:hover::before {
+  opacity: 1;
+}
+
+.stat-card-icon {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: var(--red);
+}
+
+.stat-card-val {
+  font-size: 2.3rem;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.1;
+}
+
+.stat-card-val.accent {
+  color: var(--red);
+}
+
+.stat-card-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 0.4rem;
+  font-weight: 600;
+}
+
+/* ===== FILTER BAR COMPONENT ===== */
+.filter-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin-bottom: 2.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.filter-search-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.search-field {
+  flex: 2;
+  min-width: 280px;
+  position: relative;
+}
+
+.search-field input {
+  width: 100%;
+  background: var(--black);
+  border: 1px solid var(--border);
+  padding: 0.8rem 1rem 0.8rem 2.6rem;
+  border-radius: 8px;
+  color: var(--white);
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.search-field input:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 12px var(--red-glow);
+}
+
+.search-icon-svg {
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.topic-select-box {
+  flex: 1;
+  min-width: 200px;
+}
+
+.topic-select-box select {
+  width: 100%;
+  background: var(--black);
+  border: 1px solid var(--border);
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  color: var(--white);
+  font-size: 0.92rem;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.25s ease;
+}
+
+.topic-select-box select:focus {
+  border-color: var(--red);
+}
+
+.filter-buttons-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filter-pills-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.filter-group-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 700;
+  margin-right: 0.4rem;
+  letter-spacing: 0.5px;
+}
+
+.filter-pill {
+  background: var(--black);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 0.4rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-pill:hover {
+  border-color: var(--red);
+  color: var(--white);
+}
+
+.filter-pill.active {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--white);
+  box-shadow: 0 2px 10px var(--red-glow);
+}
+
+/* ===== PROBLEM CARDS GRID ===== */
+.problems-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 1.5rem;
+}
+
+.problem-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.7rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.problem-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--red);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.problem-card:hover {
+  border-color: var(--red);
+  transform: translateY(-5px);
+  background: var(--card-hover);
+  box-shadow: 0 10px 30px rgba(229, 9, 20, 0.18);
+}
+
+.problem-card:hover::before {
+  opacity: 1;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.card-order-badge {
+  width: 38px;
+  height: 38px;
+  background: var(--red);
+  color: var(--white);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 10px var(--red-glow);
+}
+
+.card-status-badge {
+  font-size: 0.78rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+}
+
+.card-status-badge.solved {
+  background: rgba(229, 9, 20, 0.15);
+  border-color: var(--red);
+  color: var(--white);
+}
+
+.card-status-badge.unsolved {
+  background: var(--black);
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+
+.card-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 0.3rem;
+  line-height: 1.3;
+}
+
+.card-cf-id {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--red);
+  margin-bottom: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 1.4rem;
+}
+
+.tag {
+  background: var(--black);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 4px;
+}
+
+.tag.rating-tag {
+  border-color: var(--red);
+  color: var(--white);
+  background: var(--red-subtle);
+  font-weight: 700;
+}
+
+.tag.video-tag {
+  border-color: var(--border);
+  color: var(--white);
+}
+
+.tag.group-tag {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.card-footer {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.btn-toggle-solve {
+  flex: 1;
+  padding: 0.65rem 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--black);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.btn-toggle-solve:hover {
+  border-color: var(--red);
+  color: var(--white);
+}
+
+.btn-toggle-solve.is-solved {
+  border-color: var(--red);
+  background: var(--red-subtle);
+  color: var(--red);
+}
+
+.no-results-box {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 2rem;
+  background: var(--card-bg);
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+}
+
+.no-results-icon {
+  font-size: 3rem;
+  color: var(--red);
+  margin-bottom: 1rem;
+}
+
+/* ===== PROBLEM DETAIL VIEW ===== */
+.problem-detail-container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.detail-top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.detail-header-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.2rem 2rem;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6);
+}
+
+.detail-header-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--red);
+}
+
+.detail-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.detail-title {
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+
+.detail-cf-badge {
+  display: inline-block;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--red);
+  margin-bottom: 1.2rem;
+}
+
+.detail-meta-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.detail-action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--border);
+}
+
+.detail-block {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.8rem;
+  margin-bottom: 1.6rem;
+}
+
+.detail-block-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 1.1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.detail-block-title span.accent {
+  color: var(--red);
+}
+
+.detail-block p,
+.detail-block li {
+  color: #cccccc;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.detail-block ol,
+.detail-block ul {
+  padding-left: 1.6rem;
+}
+
+.detail-block li {
+  margin-bottom: 0.65rem;
+}
+
+.step-card {
+  background: var(--black);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--red);
+  border-radius: 8px;
+  padding: 0.9rem 1.2rem;
+  margin-bottom: 0.8rem;
+  color: var(--white);
+}
+
+.sample-unit {
+  margin-bottom: 1.5rem;
+}
+
+.sample-unit:last-child {
+  margin-bottom: 0;
+}
+
+.sample-label {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--red);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.4rem;
+}
+
+.sample-box {
+  background: var(--black);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.92rem;
+  color: var(--white);
+  white-space: pre;
+  overflow-x: auto;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.complexity-table {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.complexity-card {
+  background: var(--black);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.2rem;
+}
+
+.complexity-title {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--red);
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 0.3rem;
+}
+
+.complexity-val {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--white);
+  font-family: 'Cascadia Code', 'Fira Code', monospace;
+}
+
+/* ===== CODE CONTAINER COMPONENT ===== */
+.code-container {
+  background: var(--black);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1.2rem;
+  background: #0d0d0d;
+  border-bottom: 1px solid var(--border);
+}
+
+.code-lang-label {
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--red);
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.code-actions {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.copy-btn {
+  background: var(--red);
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  padding: 0.45rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.copy-btn:hover {
+  background: var(--red-hover);
+  box-shadow: 0 0 10px var(--red-glow);
+}
+
+.copy-btn.copied {
+  background: var(--white);
+  color: var(--black);
+}
+
+.code-pre-wrapper {
+  max-height: 2000px;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+
+.code-pre-wrapper.collapsed {
+  max-height: 220px;
+}
+
+.code-pre {
+  margin: 0;
+  padding: 1.4rem;
+  overflow-x: auto;
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--white);
+  tab-size: 4;
+}
+
+/* Red / White Syntax Highlighting */
+.code-pre .kw { color: var(--red); font-weight: 700; }
+.code-pre .type { color: #ff3b47; font-weight: 600; }
+.code-pre .str { color: #ff8088; }
+.code-pre .num { color: #ffa6ac; }
+.code-pre .cmt { color: var(--text-dim); font-style: italic; }
+
+.code-collapse-bar {
+  display: block;
+  width: 100%;
+  padding: 0.65rem;
+  text-align: center;
+  background: #0d0d0d;
+  border: none;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.code-collapse-bar:hover {
+  background: var(--red-subtle);
+  color: var(--white);
+}
+
+/* ===== ABOUT SECTION ===== */
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.about-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+  transition: border-color 0.3s ease;
+}
+
+.about-card:hover {
+  border-color: var(--red);
+}
+
+.about-card-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.about-card p {
+  color: var(--text-muted);
+  line-height: 1.8;
+  font-size: 0.98rem;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 3rem 1.5rem;
+  text-align: center;
+  background: var(--dark-bg);
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+footer p span {
+  color: var(--red);
+  font-weight: 700;
+}
+
+/* ===== RESPONSIVE MEDIA QUERIES ===== */
+@media (max-width: 900px) {
+  .hero {
+    padding: 120px 1.5rem 50px;
+  }
+  .complexity-table {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 1.2rem;
+  }
+  .nav-links {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.98);
+    flex-direction: column;
+    padding: 1.5rem 1.2rem;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border);
+    transform: translateY(-130%);
+    transition: transform 0.3s ease;
+  }
+  .nav-links.open {
+    transform: translateY(0);
+  }
+  .mobile-toggle {
+    display: block;
+  }
+  .problems-grid {
+    grid-template-columns: 1fr;
+  }
+  .filter-search-row {
+    flex-direction: column;
+  }
+  .filter-buttons-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .detail-top-nav {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION BAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-brand">
+    <span class="nav-logo-badge">SGU</span>
+    <span>ECPC Contest</span>
+  </div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#home" class="active" onclick="navigateToSection('home')">Home</a></li>
+    <li><a href="#main-contest" onclick="navigateToSection('main-contest')">Main Contest</a></li>
+    <li><a href="#optional-problems" onclick="navigateToSection('optional-problems')">Optional Problems</a></li>
+    <li><a href="#statistics" onclick="navigateToSection('statistics')">Statistics</a></li>
+    <li><a href="#about" onclick="navigateToSection('about')">About</a></li>
+  </ul>
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">☰</button>
+</nav>
+
+<!-- HERO SECTION -->
+<section class="hero" id="home">
+  <div class="hero-pill">SGU University Contest Mashup</div>
+  <h1>SGU <span>Competitive Programming</span> Contest</h1>
+  <p class="hero-subtitle">Learn, Practice, Solve, and Improve Your Problem-Solving Skills.</p>
+
+  <div class="hero-progress-box">
+    <div class="hero-progress-header">
+      <span>Contest Completion Progress</span>
+      <span id="heroProgressPct" style="color:var(--red)">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="heroProgressBar"></div>
+    </div>
+    <div class="hero-quick-stats">
+      <div class="hero-stat-item">
+        <div class="hero-stat-num" id="heroTotal">13</div>
+        <div class="hero-stat-label">Total Problems</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num highlight" id="heroSolved">0</div>
+        <div class="hero-stat-label">Solved</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num" id="heroRemaining">13</div>
+        <div class="hero-stat-label">Remaining</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <a href="#main-contest" class="btn btn-primary" onclick="navigateToSection('main-contest')">
+      Explore Problems
+    </a>
+  </div>
+</section>
+
+<!-- STATISTICS & CONTEST OVERVIEW -->
+<section id="statistics">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-tag">Dashboard</span>
+      <h2 class="section-title">Contest <span>Overview</span></h2>
+      <p class="section-desc">Real-time statistics extracted and verified from the official SGU contest workbook.</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-card-icon">📋</div>
+        <div class="stat-card-val" id="statCardTotal">13</div>
+        <div class="stat-card-label">Total Problems</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-icon">⚡</div>
+        <div class="stat-card-val" id="statCardEasy">8</div>
+        <div class="stat-card-label">Easy (800)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-icon">🔥</div>
+        <div class="stat-card-val" id="statCardMedium">3</div>
+        <div class="stat-card-label">Medium (900–1000)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-icon">💀</div>
+        <div class="stat-card-val" id="statCardHard">2</div>
+        <div class="stat-card-label">Hard (1100)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-icon">✅</div>
+        <div class="stat-card-val accent" id="statCardSolved">0</div>
+        <div class="stat-card-label">Completed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-icon">📈</div>
+        <div class="stat-card-val" id="statCardAvg">910</div>
+        <div class="stat-card-label">Average Rating (Main)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN CONTEST SECTION -->
+<section id="main-contest">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-tag">Core Contest</span>
+      <h2 class="section-title">Main <span>Contest</span> Problems</h2>
+      <p class="section-desc">10 verified Codeforces problems arranged in original order from A to J (Rating: 800 → 1100).</p>
+    </div>
+
+    <!-- MAIN FILTERS -->
+    <div class="filter-panel">
+      <div class="filter-search-row">
+        <div class="search-field">
+          <svg class="search-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="searchMain" placeholder="Search by name, ID (e.g. 231A), or topic..." oninput="handleSearch('main')">
+        </div>
+        <div class="topic-select-box">
+          <select id="topicFilterMain" onchange="handleTopicFilter('main', this.value)">
+            <option value="all">All Topics</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="filter-buttons-row">
+        <div class="filter-pills-group" id="diffFiltersMain">
+          <span class="filter-group-label">Difficulty:</span>
+          <button class="filter-pill active" onclick="handleDiffFilter('main', 'all', this)">All</button>
+          <button class="filter-pill" onclick="handleDiffFilter('main', '800', this)">800</button>
+          <button class="filter-pill" onclick="handleDiffFilter('main', '900', this)">900</button>
+          <button class="filter-pill" onclick="handleDiffFilter('main', '1000', this)">1000</button>
+          <button class="filter-pill" onclick="handleDiffFilter('main', '1100', this)">1100</button>
+        </div>
+
+        <div class="filter-pills-group" id="statusFiltersMain">
+          <span class="filter-group-label">Status:</span>
+          <button class="filter-pill active" onclick="handleStatusFilter('main', 'all', this)">All</button>
+          <button class="filter-pill" onclick="handleStatusFilter('main', 'solved', this)">Solved</button>
+          <button class="filter-pill" onclick="handleStatusFilter('main', 'unsolved', this)">Unsolved</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="problems-grid" id="mainProblemsGrid"></div>
+  </div>
+</section>
+
+<!-- OPTIONAL PROBLEMS SECTION -->
+<section id="optional-problems">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-tag">Warm-Up Group Problems</span>
+      <h2 class="section-title">Optional <span>Warm-Up</span> Problems</h2>
+      <p class="section-desc">Training problems from Codeforces Groups (Assiut NewComers & Coach Academy) included in the contest sheet.</p>
+    </div>
+
+    <!-- OPTIONAL FILTERS -->
+    <div class="filter-panel">
+      <div class="filter-search-row">
+        <div class="search-field">
+          <svg class="search-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="searchOptional" placeholder="Search optional problems by name or code..." oninput="handleSearch('optional')">
+        </div>
+        <div class="filter-pills-group" id="statusFiltersOptional">
+          <span class="filter-group-label">Status:</span>
+          <button class="filter-pill active" onclick="handleStatusFilter('optional', 'all', this)">All</button>
+          <button class="filter-pill" onclick="handleStatusFilter('optional', 'solved', this)">Solved</button>
+          <button class="filter-pill" onclick="handleStatusFilter('optional', 'unsolved', this)">Unsolved</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="problems-grid" id="optionalProblemsGrid"></div>
+  </div>
+</section>
+
+<!-- PROBLEM DETAIL VIEW (DYNAMIC) -->
+<section id="problemViewSection" style="display:none; padding-top:100px;">
+  <div class="container">
+    <div class="problem-detail-container" id="problemDetailContent"></div>
+  </div>
+</section>
+
+<!-- ABOUT SECTION -->
+<section id="about">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-tag">Knowledge Base</span>
+      <h2 class="section-title">About <span>This Contest</span></h2>
+      <p class="section-desc">Comprehensive reference and training mashup for university competitive programmers.</p>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="about-card-title">Contest Structure</div>
+        <p>This contest is an organized Codeforces Gym Mashup created for SGU University students. Problems are meticulously organized in increasing difficulty from rating 800 up to 1100, providing an optimal learning curve for mastering competitive programming fundamentals.</p>
+      </div>
+
+      <div class="about-card">
+        <div class="about-card-title">Curated Topics</div>
+        <p>The problemset systematically covers fundamental competitive programming paradigms: Basic Conditions, Integer Arithmetic, Simulation Loops, 2D Arrays, String Processing, Sorting Algorithms, Combinatorial Math, and Grid Implementation.</p>
+      </div>
+
+      <div class="about-card">
+        <div class="about-card-title">Verified Java Solutions</div>
+        <p>All solutions are written in standard Java (JDK 8+ compatible), following best competitive programming practices: using <code>public class Main</code>, standard <code>Scanner</code> I/O, fast string buffering where required, and zero external dependencies.</p>
+      </div>
+
+      <div class="about-card">
+        <div class="about-card-title">Local Progress Tracking</div>
+        <p>Solve problems at your own pace! Mark problems as solved or unsolved; your progress is automatically saved to your browser's <code>localStorage</code> and persists across sessions and page reloads.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p>SGU <span>Competitive Programming</span> Solutions Platform &copy; 2024</p>
+    <p style="margin-top:0.4rem; font-size:0.85rem;">Designed with a strict Black, Red &amp; White visual identity.</p>
+  </div>
+</footer>
+
+<script>
+// ===== EMBEDDED CONTEST DATA =====
+const MAIN_PROBLEMS = [
+  {
+    "id": "231A",
+    "order": "A",
+    "name": "Team",
+    "rating": 800,
+    "difficulty": "Easy",
+    "topic": "Basics / Conditions",
+    "link": "https://codeforces.com/problemset/problem/231/A",
+    "category": "main",
+    "videoSolution": "\u2014",
+    "statement": "One day three best friends Petya, Vasya and Tonya decided to form a team and take part in programming contests. Participants are usually offered several problems during programming contests. Long before the start the friends decided that they will implement a problem if at least two of them are sure about the solution. Otherwise, the friends won't write the problem's solution.\n\nThis contest offers n problems to the participants. For each problem we know, which friend is sure about the solution. Help the friends find the number of problems for which they will write a solution.",
+    "input": "The first input line contains a single integer n (1 \u2264 n \u2264 1000) \u2014 the number of problems in the contest.\n\nThen n lines contain three integers each, each integer is either 0 or 1. If the first number in the line equals 1, then Petya is sure about the problem's solution, otherwise he isn't sure. The second number shows Vasya's view on the solution, the third number shows Tonya's view. The numbers on the lines are separated by spaces.",
+    "output": "Print a single integer \u2014 the number of problems the friends will implement on the contest.",
+    "constraints": "1 \u2264 n \u2264 1000. Each value is either 0 or 1.",
+    "timeLimit": "2.0 seconds",
+    "memoryLimit": "256 megabytes",
+    "samples": [
+      {
+        "input": "3\n1 1 0\n1 1 1\n1 0 0",
+        "output": "2"
+      },
+      {
+        "input": "2\n1 0 0\n0 1 1",
+        "output": "1"
+      }
+    ],
+    "understanding": "The problem asks us to count how many problems out of n will be solved by the three friends. The team solves a problem if and only if at least two of the three friends are sure about the solution (i.e. at least two values among the three are 1).",
+    "stepByStep": [
+      "Step 1: Read the integer n representing the total number of problems.",
+      "Step 2: Initialize an accumulator variable count = 0 to track the number of solved problems.",
+      "Step 3: Loop through each of the n problems from 1 to n.",
+      "Step 4: For each problem, read the three binary integers representing Petya's, Vasya's, and Tonya's confidence.",
+      "Step 5: Calculate the sum of the three values. If sum >= 2, increment count by 1.",
+      "Step 6: After the loop finishes, print the final value of count."
+    ],
+    "algorithm": "Linear Scan / Counting with Conditional Logic",
+    "whyWorks": "Each friend's opinion is either 0 (unsure) or 1 (sure). The sum of the three integers directly equals the total number of friends sure about the solution. Since the condition requires at least two friends to be sure, testing sum >= 2 is both necessary and sufficient.",
+    "edgeCases": "All 3 friends sure (1 1 1) -> counted. None sure (0 0 0) -> not counted. Exactly one sure (e.g. 1 0 0) -> not counted. n = 1 (single problem).",
+    "timeComplexity": "O(n) \u2014 one constant-time evaluation per problem.",
+    "spaceComplexity": "O(1) \u2014 only a few integer variables used.",
+    "code": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int count = 0;\n        for (int i = 0; i < n; i++) {\n            int petya = sc.nextInt();\n            int vasya = sc.nextInt();\n            int tonya = sc.nextInt();\n            if (petya + vasya + tonya >= 2) {\n                count++;\n            }\n        }\n        System.out.println(count);\n    }\n}"
+  },
+  {
+    "id": "617A",
+    "order": "B",
+    "name": "Elephant",
+    "rating": 800,
+    "difficulty": "Easy",
+    "topic": "Simple Math",
+    "link": "https://codeforces.com/problemset/problem/617/A",
+    "category": "main",
+    "videoSolution": "Eng Mohamed Ayman",
+    "statement": "An elephant decided to visit his friend. It turned out that the elephant's house is located at point 0 and his friend's house is located at point x (x > 0) of the coordinate line.\n\nIn one step the elephant can move 1, 2, 3, 4 or 5 positions forward. Determine, what is the minimum number of steps he needs to make in order to get to his friend's house.",
+    "input": "The first line of the input contains an integer x (1 \u2264 x \u2264 1,000,000) \u2014 the coordinate of the friend's house.",
+    "output": "Print the minimum number of steps that the elephant needs to make to get from point 0 to point x.",
+    "constraints": "1 \u2264 x \u2264 1,000,000",
+    "timeLimit": "1.0 second",
+    "memoryLimit": "256 megabytes",
+    "samples": [
+      {
+        "input": "5",
+        "output": "1"
+      },
+      {
+        "input": "12",
+        "output": "3"
+      }
+    ],
+    "understanding": "The elephant starts at point 0 and needs to reach coordinate x using steps of lengths 1, 2, 3, 4, or 5. To minimize the total number of steps taken, the elephant should maximize the distance covered in each step by greedily using steps of length 5.",
+    "stepByStep": [
+      "Step 1: Read the target coordinate x from standard input.",
+      "Step 2: To minimize steps, greedily take as many steps of length 5 as possible: x / 5 full steps.",
+      "Step 3: If x % 5 != 0, there is a remaining distance (1, 2, 3, or 4), which requires exactly one additional step of that exact remainder length.",
+      "Step 4: Compute the ceiling division ceil(x / 5). In integer arithmetic, this can be written concisely as (x + 4) / 5.",
+      "Step 5: Output the result."
+    ],
+    "algorithm": "Greedy / Math (Ceiling Division)",
+    "whyWorks": "The largest possible step is 5. Since any smaller step (1 to 4) covers strictly less distance, taking 5 as often as possible is always optimal. Any remainder between 1 and 4 can be covered in exactly one single step.",
+    "edgeCases": "x = 1 -> exactly 1 step (using step 1). x is an exact multiple of 5 (e.g. 5, 10, 100) -> x / 5 steps without extra step. Maximum constraint x = 1,000,000 -> 200,000 steps.",
+    "timeComplexity": "O(1) \u2014 single arithmetic operation.",
+    "spaceComplexity": "O(1) \u2014 constant space.",
+    "code": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int x = sc.nextInt();\n        int steps = (x + 4) / 5;\n        System.out.println(steps);\n    }\n}"
+  },
+  {
+    "id": "791A",
+    "order": "C",
+    "name": "Bear and Big Brother",
+    "rating": 800,
+    "difficulty": "Easy",
+    "topic": "Simple Loop",
+    "link": "https://codeforces.com/problemset/problem/791/A",
+    "category": "main",
+    "videoSolution": "\u2014",
+    "statement": "Bear Limak wants to become the largest of bears, or at least to become larger than his brother Bob.\n\nRight now, Limak and Bob weigh a and b respectively. It's guaranteed that Limak's weight is smaller than or equal to his brother's weight (a \u2264 b).\n\nLimak eats a lot and his weight is tripled after every year, while Bob's weight is doubled after every year.\n\nAfter how many full years will Limak become strictly larger than Bob?",
+    "input": "The only line of the input contains two integers a and b (1 \u2264 a \u2264 b \u2264 10) \u2014 the weight of Limak and the weight of Bob respectively.",
+    "output": "Print one integer, denoting the integer number of years after which Limak will become strictly larger than Bob.",
+    "constraints": "1 \u2264 a \u2264 b \u2264 10",
+    "timeLimit": "1.0 second",
+    "memoryLimit": "256 megabytes",
+    "samples": [
+      {
+        "input": "4 7",
+        "output": "2"
+      },
+      {
+        "input": "4 9",
+        "output": "3"
+      },
+      {
+        "input": "1 1",
+        "output": "1"
+      }
+    ],
+    "understanding": "Limak starts with weight a and Bob with weight b. Each year Limak's weight is multiplied by 3 and Bob's by 2. We need to find the minimum number of years y such that a * 3^y > b * 2^y.",
+    "stepByStep": [
+      "Step 1: Read initial weights a and b.",
+      "Step 2: Initialize a counter years = 0.",
+      "Step 3: Execute a while loop with the condition a <= b.",
+      "Step 4: Inside the loop, update a = a * 3, b = b * 2, and increment years++.",
+      "Step 5: The moment a becomes strictly greater than b, exit the loop.",
+      "Step 6: Print years."
+    ],
+    "algorithm": "Simulation / Exponential Growth Loop",
+    "whyWorks": "Because Limak grows by a factor of 3 while Bob grows by a factor of 2, the ratio of their weights changes by 1.5x each year. Since a and b are at most 10, the loop runs at most 6 times. Simulation is completely accurate and free of floating-point inaccuracies.",
+    "edgeCases": "a == b initially (e.g. 1 1): After 1 year, a = 3, b = 2 -> a > b, answer is 1. Maximum initial disparity (a = 1, b = 10) takes only 6 years.",
+    "timeComplexity": "O(log(b/a)) \u2014 at most 6 iterations.",
+    "spaceComplexity": "O(1) \u2014 constant space.",
+    "code": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        long a = sc.nextLong();\n        long b = sc.nextLong();\n        int years = 0;\n        while (a <= b) {\n            a *= 3;\n            b *= 2;\n            years++;\n        }\n        System.out.println(years);\n    }\n}"
+  },
+  {
+    "id": "546A",
+    "order": "D",
+    "name": "Soldier and Bananas",
+    "rating": 800,
+    "difficulty": "Easy",
+    "topic": "Math / Loop",
+    "link": "https://codeforces.com/problemset/problem/546/A",
+    "category": "main",
+    "videoSolution": "Eng Mohamed Ayman",
+    "statement": "A soldier wants to buy w bananas in the shop. He has to pay k dollars for the first banana, 2k dollars for the second one and so on (in other words, he has to pay i \u00b7 k dollars for the i-th banana).\n\nHe has n dollars. How many dollars does he have to borrow from his friend soldier to buy w bananas?",
+    "input": "The first line contains three positive integers k, n, w (1 \u2264 k, w \u2264 1000, 0 \u2264 n \u2264 10^9) \u2014 the cost of the first banana, initial number of dollars the soldier has and number of bananas he wants.",
+    "output": "Output one integer \u2014 the amount of dollars that the soldier must borrow from his friend. If he doesn't have to borrow money, output 0.",
+    "constraints": "1 \u2264 k, w \u2264 1000, 0 \u2264 n \u2264 10^9",
+    "timeLimit": "1.0 second",
+    "memoryLimit": "256 megabytes",
+    "samples": [
+      {
+        "input": "3 17 4",
+        "output": "13"
+      }
+    ],
+    "understanding": "The i-th banana costs i * k. The total cost to buy w bananas is k * (1 + 2 + ... + w). The soldier currently has n dollars. If the total cost exceeds n, he must borrow (totalCost - n). Otherwise, he borrows 0.",
+    "stepByStep": [
+      "Step 1: Read k, n, and w from input using 64-bit long to avoid overflow.",
+      "Step 2: Calculate the sum of 1 through w using the closed formula: S = w * (w + 1) / 2.",
+      "Step 3: Multiply S by k to get the total cost: totalCost = k * S.",
+      "Step 4: Compute the deficit: borrow = totalCost - n.",
+      "Step 5: If borrow > 0, output borrow. If borrow <= 0, output 0."
+    ],
+    "algorithm": "Math / Arithmetic Progression Sum",
+    "whyWorks": "The sum of the first w positive integers is given by Gauss's formula w*(w+1)/2. Multiplying by k yields the exact total cost in O(1) time without looping.",
+    "edgeCases": "Soldier already has more than enough money (n >= totalCost) -> output 0. Maximum values (k = 1000, w = 1000) -> total cost = 1000 * (1000 * 1001 / 2) = 500,500,000 (fits in 64-bit long).",
+    "timeComplexity": "O(1) \u2014 constant time math formula.",
+    "spaceComplexity": "O(1) \u2014 constant space.",
+    "code": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        long k = sc.nextLong();\n        long n = sc.nextLong();\n        long w = sc.nextLong();\n        long totalCost = k * (w * (w + 1) / 2);\n        long borrow = totalCost - n;\n        System.out.println(borrow > 0 ? borrow : 0);\n    }\n}"
+  },
+  {
+    "id": "263A",
+    "order": "E",
+    "name": "Beautiful Matrix",
+    "rating": 800,
+    "difficulty": "Easy",
+    "topic": "2D Array / Math",
+    "link": "https://codeforces.com/problemset/problem/263/A",
+    "category": "main",
+    "videoSolution": "\u2014",
+    "statement": "You've got a 5 \u00d7 5 matrix, consisting of 24 zeroes and a single number one. Let's index the matrix rows by numbers from 1 to 5 from top to bottom, and columns by numbers from 1 to 5 from left to right. In one move, you can apply one of the two following transformations to the matrix:\n\n1. Swap two neighboring matrix rows, that is, rows with indexes i and i + 1 for some integer i (1 \u2264 i < 5).\n2. Swap two neighboring matrix columns, that is, columns with indexes j and j + 1 for some integer j (1 \u2264 j < 5).\n\nYou think, a matrix looks beautiful, if the single number one of the matrix is located in its middle (in the cell that is on the intersection of the third row and the third column). Count the minimum number of moves needed to make the matrix beautiful.",
+    "input": "The input consists of five lines, each line contains five integers: the j-th integer in the i-th line of the input represents the element of the matrix that is located on the intersection of the i-th row and the j-th column. It is guaranteed that the matrix consists of 24 zeroes and a single number one.",
+    "output": "Print a single integer \u2014 the minimum number of moves needed to make the matrix beautiful.",
+    "constraints": "Strictly 5 \u00d7 5 matrix with 24 zeroes and one 1.",
+    "timeLimit": "2.0 seconds",
+    "memoryLimit": "256 megabytes",
+    "samples": [
+      {
+        "input": "0 0 0 0 0\n0 0 0 0 1\n0 0 0 0 0\n0 0 0 0 0\n0 0 0 0 0",
+        "output": "3"
+      },
+      {
+        "input": "0 0 0 0 0\n0 0 0 0 0\n0 1 0 0 0\n0 0 0 0 0\n0 0 0 0 0",
+        "output": "1"
+      }
+    ],
+    "understanding": "We are given a 5x5 grid containing exactly one 1 and twenty-four 0s. In one move we can swap adjacent rows or adjacent columns. The target cell is (3, 3). We need the minimum number of moves to bring 1 to (3, 3).",
+    "stepByStep": [
+      "Step 1: Read the 25 matrix entries row by row using 1-based coordinates (r from 1 to 5, c from 1 to 5).",
+      "Step 2: When reading each value, check if it equals 1. If so, store its row r and column c.",
+      "Step 3: The target center position is row 3, column 3.",
+      "Step 4: Swapping adjacent rows moves the 1 vertically by 1 step. Swapping adjacent columns moves it horizontally by 1 step.",
+      "Step 5: The minimum moves required equals the Manhattan distance: |r - 3| + |c - 3|.",
+      "Step 6: Output the calculated Manhattan distance."
+    ],
+    "algorithm": "Manhattan Distance / Grid Coordinate Geometry",
+    "whyWorks": "Row operations and column operations are completely independent. Each row swap changes the row coordinate by 1, taking exactly |r - 3| row swaps to reach row 3. Similarly, column swaps take exactly |c - 3| moves. Their sum gives the minimum total operations.",
+    "edgeCases": "The 1 is already at (3, 3) -> 0 moves. The 1 is at a corner (e.g. 1, 1 or 5, 5) -> |1-3| + |1-3| = 4 moves.",
+    "timeComplexity": "O(1) \u2014 constant 25 cells processed.",
+    "spaceComplexity": "O(1) \u2014 constant auxiliary space.",
+    "code": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int targetRow = 0, targetCol = 0;\n        for (int r = 1; r <= 5; r++) {\n            for (int c = 1; c <= 5; c++) {\n                int val = sc.nextInt();\n                if (val == 1) {\n                    targetRow = r;\n                    targetCol = c;\n                }\n            }\n        }\n        int moves = Math.abs(targetRow - 3) + Math.abs(targetCol - 3);\n        System.out.println(moves);\n    }\n}"
+  },
+  {
+    "id": "112A",
+    "order": "F",
+    "name": "Petya and Strings",
+    "rating": 800,
+    "difficulty": "Easy",
+    "topic": "Strings",
+    "link": "https://codeforces.com/problemset/problem/112/A",
+    "category": "main",
+    "videoSolution": "\u2014",
+    "statement": "Little Petya loves presents. His mum bought him two strings of the same size for his birthday. The strings consist of uppercase and lowercase Latin letters. Now Petya wants to compare those two strings lexicographically. The letters' case does not matter, that is an uppercase letter is considered equivalent to the corresponding lowercase letter. Help Petya perform the comparison.",
+    "input": "Each of the first two lines contains a bought string. The strings' lengths range from 1 to 100 inclusive. It is guaranteed that the strings are of the same length and also consist of uppercase and lowercase Latin letters.",
+    "output": "If the first string is less than the second one, print \"-1\". If the second string is less than the first one, print \"1\". If the strings are equal, print \"0\". Note that the letters' case is not taken into consideration when the strings are compared.",
+    "constraints": "1 \u2264 length \u2264 100. Both strings have equal length and contain only English letters.",
+    "timeLimit": "2.0 seconds",
+    "memoryLimit": "256 megabytes",
+    "samples": [
+      {
+        "input": "aaaa\naaaA",
+        "output": "0"
+      },
+      {
+        "input": "abs\nAbz",
+        "output": "-1"
+      },
+      {
+        "input": "abcdefg\nAbCdEfF",
+        "output": "1"
+      }
+    ],
+    "understanding": "We need to compare two strings of equal length character-by-character in case-insensitive alphabetical (lexicographical) order.",
+    "stepByStep": [
+      "Step 1: Read the two strings s1 and s2 from standard input.",
+      "Step 2: Convert both strings to lowercase using s1.toLowerCase() and s2.toLowerCase() to eliminate case sensitivity.",
+      "Step 3: Compare the strings using Java's built-in compareTo method.",
+      "Step 4: If cmp < 0, output -1. If cmp > 0, output 1. If cmp == 0, output 0."
+    ],
+    "algorithm": "String Lexicographical Comparison",
+    "whyWorks": "Converting both strings to lowercase maps 'A'..'Z' to 'a'..'z', preserving the alphabetical order while neutralizing case differences. Then compareTo performs a standard dictionary order comparison.",
+    "edgeCases": "Identical strings with different casing (e.g. 'aaaa' and 'aaaA') -> 0. Difference at the very first or very last character. Minimal length 1.",
+    "timeComplexity": "O(L) where L is the length of the string (L \u2264 100).",
+    "spaceComplexity": "O(L) to store the lowercase representations.",
+    "code": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String s1 = sc.nextLine().toLowerCase();\n        String s2 = sc.nextLine().toLowerCase();\n        int cmp = s1.compareTo(s2);\n        if (cmp < 0) {\n            System.out.println(-1);\n        } else if (cmp > 0) {\n            System.out.println(1);\n        } else {\n            System.out.println(0);\n        }\n    }\n}"
+  },
+  {
+    "id": "405A",
+    "order": "G",
+    "name": "Gravity Flip",
+    "rating": 900,
+    "difficulty": "Easy-Medium",
+    "topic": "Sorting / Arrays",
+    "link": "https://codeforces.com/problemset/problem/405/A",
+    "category": "main",
+    "videoSolution": "\u2014",
+    "statement": "Little Chris is bored during his physics lessons (too easy), so he has built a toy box to keep himself occupied. The box is special, since it has the ability to change gravity.\n\nThere are n columns of toy cubes in the box arranged in a line. The i-th column contains a_i cubes. At first, the gravity in the box is pulling the cubes downwards. When Chris switches the gravity, it begins to pull all the cubes to the right side of the box.\n\nGiven the initial configuration of the toy cubes in the box, find the amounts of cubes in each of the n columns after the gravity switch!",
+    "input": "The first line of input contains an integer n (1 \u2264 n \u2264 100), the number of the columns in the box. The next line contains n space-separated integer numbers. The i-th number a_i (1 \u2264 a_i \u2264 100) denotes the number of cubes in the i-th column.",
+    "output": "Output n integer numbers separated by spaces, where the i-th number is the amount of cubes in the i-th column after the gravity switch.",
+    "constraints": "1 \u2264 n \u2264 100, 1 \u2264 a_i \u2264 100",
+    "timeLimit": "1.0 second",
+    "memoryLimit": "256 megabytes",
+    "samples": [
+      {
+        "input": "4\n3 2 1 2",
+        "output": "1 2 2 3"
+      },
+      {
+        "input": "3\n2 3 8",
+        "output": "2 3 8"
+      }
+    ],
+    "understanding": "There are n columns of cubes. When gravity pulls to the right, all cubes in each horizontal row slide as far right as possible. We need to find the final height of each column.",
+    "stepByStep": [
+      "Step 1: Read the number of columns n.",
+      "Step 2: Read the heights of all n columns into an array a of length n.",
+      "Step 3: Analyze the physical effect: on any horizontal level h, if there are k cubes in total across all columns, gravity pulling to the right will cause all k cubes to pack into the rightmost k columns.",
+      "Step 4: This physical process preserves the total count of cubes at every height and ensures column heights are sorted in non-decreasing order from left to right.",
+      "Step 5: Sort the array using Arrays.sort(a).",
+      "Step 6: Print the sorted elements separated by spaces."
+    ],
+    "algorithm": "Sorting (Ascending Order)",
+    "whyWorks": "Because cubes fall independently along rows to the right, the rightmost columns will accumulate the highest stacks of cubes. The final configuration of column heights corresponds precisely to sorting the original array in non-decreasing order.",
+    "edgeCases": "Already sorted array -> stays identical. All columns equal -> unchanged. n = 1 -> unchanged.",
+    "timeComplexity": "O(n log n) using Arrays.sort.",
+    "spaceComplexity": "O(n) for the array.",
+    "code": "import java.util.Arrays;\nimport java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] a = new int[n];\n        for (int i = 0; i < n; i++) {\n            a[i] = sc.nextInt();\n        }\n        Arrays.sort(a);\n        StringBuilder sb = new StringBuilder();\n        for (int i = 0; i < n; i++) {\n            if (i > 0) sb.append(' ');\n            sb.append(a[i]);\n        }\n        System.out.println(sb);\n    }\n}"
+  },
+  {
+    "id": "122A",
+    "order": "H",
+    "name": "Lucky Division",
+    "rating": 1000,
+    "difficulty": "Medium",
+    "topic": "Brute Force / Math",
+    "link": "https://codeforces.com/problemset/problem/122/A",
+    "category": "main",
+    "videoSolution": "\u2014",
+    "statement": "Petya loves lucky numbers. Everybody knows that lucky numbers are positive integers whose decimal representation contains only the lucky digits 4 and 7. For example, numbers 47, 744, 4 are lucky and 5, 17, 467 are not.\n\nPetya calls a number almost lucky if it could be evenly divided by some lucky number. Help him find out if the given number n is almost lucky.",
+    "input": "The single line contains an integer n (1 \u2264 n \u2264 1000) \u2014 the number that needs to be checked.",
+    "output": "In the only line print \"YES\" (without the quotes), if number n is almost lucky. Otherwise, print \"NO\" (without the quotes).",
+    "constraints": "1 \u2264 n \u2264 1000",
+    "timeLimit": "2.0 seconds",
+    "memoryLimit": "256 megabytes",
+    "samples": [
+      {
+        "input": "47",
+        "output": "YES"
+      },
+      {
+        "input": "16",
+        "output": "YES"
+      },
+      {
+        "input": "78",
+        "output": "NO"
+      }
+    ],
+    "understanding": "A number is lucky if all its digits are 4 or 7. A number is almost lucky if it is divisible by at least one lucky number (note that every lucky number is almost lucky since it is divisible by itself).",
+    "stepByStep": [
+      "Step 1: Read the integer n (1 \u2264 n \u2264 1000).",
+      "Step 2: List all lucky numbers that are \u2264 1000. There are only 14 such numbers: 4, 7, 44, 47, 74, 77, 444, 447, 474, 477, 744, 747, 774, 777.",
+      "Step 3: Iterate through each lucky number l in the precomputed array.",
+      "Step 4: Check if n is evenly divisible by l (n % l == 0).",
+      "Step 5: If a divisor is found, print \"YES\" and exit immediately.",
+      "Step 6: If no lucky number divides n, print \"NO\"."
+    ],
+    "algorithm": "Precomputation / Brute Force Divisibility Check",
+    "whyWorks": "Since n \u2264 1000, any lucky divisor must be \u2264 1000. The number of lucky numbers up to 1000 is 2^1 + 2^2 + 2^3 = 14. Checking divisibility by 14 fixed numbers takes constant time O(1).",
+    "edgeCases": "n is itself lucky (e.g. 47) -> YES. n is a composite multiple of a lucky number (e.g. 16 = 4 * 4) -> YES. Smallest n = 1 -> NO.",
+    "timeComplexity": "O(1) \u2014 checking at most 14 lucky numbers.",
+    "spaceComplexity": "O(1) \u2014 constant storage for the lucky numbers array.",
+    "code": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] luckyNumbers = {4, 7, 44, 47, 74, 77, 444, 447, 474, 477, 744, 747, 774, 777};\n        boolean isAlmostLucky = false;\n        for (int lucky : luckyNumbers) {\n            if (n % lucky == 0) {\n                isAlmostLucky = true;\n                break;\n            }\n        }\n        System.out.println(isAlmostLucky ? \"YES\" : \"NO\");\n    }\n}"
+  },
+  {
+    "id": "456A",
+    "order": "I",
+    "name": "Laptops",
+    "rating": 1100,
+    "difficulty": "Medium-Hard",
+    "topic": "Sorting / Pairs",
+    "link": "https://codeforces.com/problemset/problem/456/A",
+    "category": "main",
+    "videoSolution": "Solver to be (Java)",
+    "statement": "One day Dima and Alex had an argument about the price and quality of laptops. Dima thinks that the more expensive a laptop is, the better it is. Alex disagrees. Alex thinks that there are two laptops, such that the price of the first laptop is less (strictly smaller) than the price of the second laptop but the quality of the first laptop is higher (strictly greater) than the quality of the second laptop.\n\nPlease, check the guess of Alex. You are given descriptions of n laptops. Determine whether two described above laptops exist.",
+    "input": "The first line contains an integer n (1 \u2264 n \u2264 10^5) \u2014 the number of laptops.\n\nNext n lines contain two integers each, a_i and b_i (1 \u2264 a_i, b_i \u2264 n), where a_i is the price of the i-th laptop, and b_i is the number that represents the quality of the i-th laptop (the larger the number is, the higher is the quality).\n\nAll a_i are distinct. All b_i are distinct.",
+    "output": "If Alex is correct, print \"Happy Alex\", otherwise print \"Poor Alex\" (without the quotes).",
+    "constraints": "1 \u2264 n \u2264 10^5, 1 \u2264 a_i, b_i \u2264 n. All a_i distinct, all b_i distinct.",
+    "timeLimit": "1.0 second",
+    "memoryLimit": "256 megabytes",
+    "samples": [
+      {
+        "input": "2\n1 2\n2 1",
+        "output": "Happy Alex"
+      }
+    ],
+    "understanding": "Alex claims there exists a pair of laptops where the cheaper one has higher quality (a_i < a_j and b_i > b_j). If such a pair exists, print 'Happy Alex'; otherwise, print 'Poor Alex'.",
+    "stepByStep": [
+      "Step 1: Read n, the number of laptops.",
+      "Step 2: Read all pairs of (price, quality) into a 2D array laptops[n][2].",
+      "Step 3: Sort the laptops in ascending order of price a_i.",
+      "Step 4: Once sorted by price, check if the qualities are strictly increasing.",
+      "Step 5: If for any adjacent pair laptops[i][1] < laptops[i-1][1], then laptop i-1 is cheaper than laptop i yet has higher quality. In this case, Alex is right -> set flag and break.",
+      "Step 6: If such an inversion was found, print \"Happy Alex\"; otherwise, print \"Poor Alex\"."
+    ],
+    "algorithm": "Sorting + Adjacent Inversion Check",
+    "whyWorks": "Sorting by price guarantees that for all i < j, price[i] < price[j]. Then Alex's condition price[i] < price[j] and quality[i] > quality[j] is equivalent to quality not being monotonically increasing. If an inversion exists anywhere, it must also exist between some adjacent pair.",
+    "edgeCases": "n = 2 with (1, 2) and (2, 1): Laptop 1 cheaper but higher quality -> Happy Alex. All a_i == b_i -> Poor Alex. Large n = 10^5 runs in O(n log n).",
+    "timeComplexity": "O(n log n) for sorting the pairs.",
+    "spaceComplexity": "O(n) to store the pairs.",
+    "code": "import java.util.Arrays;\nimport java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[][] laptops = new int[n][2];\n        for (int i = 0; i < n; i++) {\n            laptops[i][0] = sc.nextInt();\n            laptops[i][1] = sc.nextInt();\n        }\n        Arrays.sort(laptops, (a, b) -> Integer.compare(a[0], b[0]));\n        boolean alexIsRight = false;\n        for (int i = 1; i < n; i++) {\n            if (laptops[i][1] < laptops[i - 1][1]) {\n                alexIsRight = true;\n                break;\n            }\n        }\n        System.out.println(alexIsRight ? \"Happy Alex\" : \"Poor Alex\");\n    }\n}"
+  },
+  {
+    "id": "287A",
+    "order": "J",
+    "name": "IQ Test",
+    "rating": 1100,
+    "difficulty": "Medium-Hard",
+    "topic": "2D Grid / Implementation",
+    "link": "https://codeforces.com/problemset/problem/287/A",
+    "category": "main",
+    "videoSolution": "Dr Mostafa Saad",
+    "statement": "In the city of Ultima Thule job applicants are often offered an IQ test.\n\nThe test is as follows: the person gets a piece of squared paper with a 4 \u00d7 4 square painted on it. Some of the square's cells are painted black and others are painted white. Your task is to repaint at most one cell the other color so that the picture has a 2 \u00d7 2 square, completely consisting of cells of the same color. If the initial picture already has such a square, the person should just say so and the test will be completed.\n\nYour task is to write a program that determines whether it is possible to pass the test. You cannot pass the test if either repainting any cell or no action doesn't result in a 2 \u00d7 2 square, consisting of cells of the same color.",
+    "input": "Four lines contain four characters each: the j-th character of the i-th line equals \".\" if the cell in the i-th row and the j-th column of the square is painted white, and \"#\" if the cell is black.",
+    "output": "Print \"YES\" (without the quotes), if the test can be passed and \"NO\" (without the quotes) otherwise.",
+    "constraints": "Strictly 4 \u00d7 4 grid consisting solely of '.' and '#'.",
+    "timeLimit": "2.0 seconds",
+    "memoryLimit": "256 megabytes",
+    "samples": [
+      {
+        "input": "####\n.#..\n####\n....",
+        "output": "YES"
+      },
+      {
+        "input": "####\n....\n####\n....",
+        "output": "NO"
+      }
+    ],
+    "understanding": "We have a fixed 4x4 grid. We can repaint at most one cell. We need to check if there is any 2x2 square of the same color (either all black '#' or all white '.').",
+    "stepByStep": [
+      "Step 1: Read the 4 lines of 4 characters each into a 2D char array grid[4][4].",
+      "Step 2: A 4x4 grid contains exactly (4-2+1) * (4-2+1) = 9 possible 2x2 subgrids, indexed by top-left corner (r, c) where 0 \u2264 r \u2264 2 and 0 \u2264 c \u2264 2.",
+      "Step 3: For each 2x2 subgrid, count the number of black cells '#' among the 4 cells: (r,c), (r,c+1), (r+1,c), (r+1,c+1).",
+      "Step 4: If cnt == 4 or cnt == 0, the subgrid is already monochromatic (0 repaints needed) -> pass.",
+      "Step 5: If cnt == 3 or cnt == 1, exactly one cell differs; repainting that one cell makes all 4 cells identical (1 repaint needed) -> pass.",
+      "Step 6: If cnt == 2, repainting 1 cell yields 3 of one color, never 4 -> fail for this subgrid.",
+      "Step 7: Therefore, a subgrid can be made monochromatic with \u2264 1 repaint if and only if cnt != 2. If any subgrid satisfies cnt != 2, output \"YES\" and exit.",
+      "Step 8: If all 9 subgrids have cnt == 2, output \"NO\"."
+    ],
+    "algorithm": "Exhaustive Subgrid Enumeration / Combinatorial Search",
+    "whyWorks": "A 2x2 square has 4 cells. With at most 1 repaint, we can change at most one cell. Hence, we can only achieve 4 matching cells if initially at least 3 cells already match. That means the majority color has count \u2265 3, which is equivalent to black count != 2.",
+    "edgeCases": "Already monochromatic 2x2 square (count 4 or 0) -> YES. Alternating checkerboard (all counts are 2) -> NO. Valid subgrid at bottom-right corner.",
+    "timeComplexity": "O(1) \u2014 exactly 9 subgrids checked with 4 lookups each (36 operations).",
+    "spaceComplexity": "O(1) \u2014 4x4 array.",
+    "code": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        char[][] grid = new char[4][4];\n        for (int i = 0; i < 4; i++) {\n            grid[i] = sc.nextLine().toCharArray();\n        }\n        for (int r = 0; r < 3; r++) {\n            for (int c = 0; c < 3; c++) {\n                int blackCount = 0;\n                if (grid[r][c] == '#') blackCount++;\n                if (grid[r][c + 1] == '#') blackCount++;\n                if (grid[r + 1][c] == '#') blackCount++;\n                if (grid[r + 1][c + 1] == '#') blackCount++;\n                if (blackCount != 2) {\n                    System.out.println(\"YES\");\n                    return;\n                }\n            }\n        }\n        System.out.println(\"NO\");\n    }\n}"
+  }
+];
+const OPTIONAL_PROBLEMS = [
+  {
+    "id": "326175B",
+    "order": "1",
+    "name": "Memo and Momo",
+    "rating": 800,
+    "difficulty": "Easy",
+    "topic": "Conditions / Divisibility",
+    "link": "https://codeforces.com/group/MWSDmqGsZm/contest/326175/problem/B",
+    "category": "optional",
+    "sourceGroup": "Assiut NewComers",
+    "groupCode": "326175B",
+    "mashupNote": "Try adding; if rejected, skip or replace",
+    "statement": "Memo and Momo are playing a game. Memo will choose a positive number a, and Momo will choose a positive number b.\n\nYour task is to tell them who will win according to the following rules:\n\u2022 If both a and b are divisible by k, both of them win and you should print \"Both\".\n\u2022 If a is divisible by k but b isn't, Memo wins and you should print \"Memo\".\n\u2022 If b is divisible by k but a isn't, Momo wins and you should print \"Momo\".\n\u2022 If both a and b are not divisible by k, no one wins and you should print \"No One\".",
+    "input": "Only one line containing three positive numbers a, b, and k (1 \u2264 a, b, k \u2264 10^18).",
+    "output": "Print the answer as described in the statement (\"Both\", \"Memo\", \"Momo\", or \"No One\").",
+    "constraints": "1 \u2264 a, b, k \u2264 10^18 (Requires 64-bit long in Java)",
+    "timeLimit": "1.0 second",
+    "memoryLimit": "256 megabytes",
+    "samples": [
+      {
+        "input": "15 7 3",
+        "output": "Memo"
+      },
+      {
+        "input": "22 10 2",
+        "output": "Both"
+      }
+    ],
+    "understanding": "Given three 64-bit integers a, b, and k, determine whether a, b, or both are divisible by k. Output the corresponding winner name according to the 4 stated rules.",
+    "stepByStep": [
+      "Step 1: Read a, b, and k as 64-bit integers using sc.nextLong().",
+      "Step 2: Test if a is divisible by k: aDivK = (a % k == 0).",
+      "Step 3: Test if b is divisible by k: bDivK = (b % k == 0).",
+      "Step 4: If both aDivK and bDivK are true, print \"Both\".",
+      "Step 5: Else if aDivK is true, print \"Memo\".",
+      "Step 6: Else if bDivK is true, print \"Momo\".",
+      "Step 7: Else (neither is divisible), print \"No One\"."
+    ],
+    "algorithm": "Modulo Arithmetic / Multi-branch Conditional Logic",
+    "whyWorks": "A number x is divisible by k if and only if x % k == 0. Evaluating both divisibility conditions independently allows selecting the exact outcome from the four mutually exclusive possibilities.",
+    "edgeCases": "k = 1 divides all numbers (always Both). Numbers up to 10^18 require 64-bit long to avoid 32-bit overflow.",
+    "timeComplexity": "O(1) \u2014 two modulo evaluations.",
+    "spaceComplexity": "O(1) \u2014 three long variables.",
+    "code": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        long a = sc.nextLong();\n        long b = sc.nextLong();\n        long k = sc.nextLong();\n        boolean aDivK = (a % k == 0);\n        boolean bDivK = (b % k == 0);\n        if (aDivK && bDivK) {\n            System.out.println(\"Both\");\n        } else if (aDivK) {\n            System.out.println(\"Memo\");\n        } else if (bDivK) {\n            System.out.println(\"Momo\");\n        } else {\n            System.out.println(\"No One\");\n        }\n    }\n}"
+  },
+  {
+    "id": "355490P01",
+    "order": "2",
+    "name": "Reverse an array",
+    "rating": 800,
+    "difficulty": "Easy",
+    "topic": "Arrays / Loops",
+    "link": "https://codeforces.com/group/yg7WhsFsAp/contest/355490/problem/P01",
+    "category": "optional",
+    "sourceGroup": "Coach Academy",
+    "groupCode": "355490P01",
+    "mashupNote": "Try adding; if rejected, skip or replace",
+    "statement": "Welcome to the series of practice contests for beginners.\n\nYou have an array of N integers, but you don't like this array much and you would like to have it reversed.",
+    "input": "The first line contains an integer N (1 \u2264 N \u2264 1,000,000) \u2013 the length of the array.\nThe second line contains N integers A_0, A_1, ..., A_{N-1} (1 \u2264 A_i \u2264 1000) \u2014 the original array.",
+    "output": "Output N integers \u2013 the reversed array (i.e. A_{N-1}, A_{N-2}, ..., A_1, A_0).",
+    "constraints": "1 \u2264 N \u2264 10^6, 1 \u2264 A_i \u2264 1000",
+    "timeLimit": "5.0 seconds",
+    "memoryLimit": "256 megabytes",
+    "samples": [
+      {
+        "input": "5\n2 3 5 5 1",
+        "output": "1 5 5 3 2"
+      }
+    ],
+    "understanding": "We are given an array of N integers. We need to output the array elements in exact reverse order (from the last element to the first).",
+    "stepByStep": [
+      "Step 1: Read the array length N.",
+      "Step 2: Allocate an integer array int[] a = new int[n] and read the N integers.",
+      "Step 3: Create a StringBuilder to collect output values efficiently.",
+      "Step 4: Iterate backwards from index n - 1 down to 0.",
+      "Step 5: Append each element to the StringBuilder, separated by single spaces.",
+      "Step 6: Print the complete reversed sequence."
+    ],
+    "algorithm": "Reverse Array Traversal / Fast Output Buffering",
+    "whyWorks": "Traversing the array indices from N-1 down to 0 produces the reversed sequence in O(N) time. Using StringBuilder minimizes I/O overhead for large inputs up to 10^6 elements.",
+    "edgeCases": "N = 1 -> outputs the single element. All elements equal. Maximum size N = 10^6.",
+    "timeComplexity": "O(N) \u2014 single forward read pass and single backward traversal pass.",
+    "spaceComplexity": "O(N) \u2014 to store the array elements.",
+    "code": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] a = new int[n];\n        for (int i = 0; i < n; i++) {\n            a[i] = sc.nextInt();\n        }\n        StringBuilder sb = new StringBuilder();\n        for (int i = n - 1; i >= 0; i--) {\n            if (i < n - 1) sb.append(' ');\n            sb.append(a[i]);\n        }\n        System.out.println(sb);\n    }\n}"
+  },
+  {
+    "id": "219774G",
+    "order": "3",
+    "name": "Palindrome Array",
+    "rating": 900,
+    "difficulty": "Easy-Medium",
+    "topic": "Arrays / Two Pointers",
+    "link": "https://codeforces.com/group/MWSDmqGsZm/contest/219774/problem/G",
+    "category": "optional",
+    "sourceGroup": "Assiut NewComers",
+    "groupCode": "219774G",
+    "mashupNote": "Try adding; if rejected, skip or replace",
+    "statement": "Given a number N and an array A of N numbers. Determine if it's palindrome or not.\n\nNote: An array is called palindrome if it reads the same backward and forward, for example, arrays [1] and [1, 2, 3, 2, 1] are palindromes, while arrays [1, 12] and [4, 7, 5, 4] are not.",
+    "input": "First line contains a number N (1 \u2264 N \u2264 10^5) \u2014 the number of elements.\nSecond line contains N numbers A_i (1 \u2264 A_i \u2264 10^9).",
+    "output": "Print \"YES\" (without quotes) if A is a palindrome array, otherwise, print \"NO\" (without quotes).",
+    "constraints": "1 \u2264 N \u2264 10^5, 1 \u2264 A_i \u2264 10^9",
+    "timeLimit": "1.0 second",
+    "memoryLimit": "256 megabytes",
+    "samples": [
+      {
+        "input": "5\n1 3 2 3 1",
+        "output": "YES"
+      },
+      {
+        "input": "4\n1 2 3 4",
+        "output": "NO"
+      }
+    ],
+    "understanding": "An array of length N is a palindrome if A[i] == A[N - 1 - i] for all indices 0 \u2264 i < N. We must check whether the array is symmetric.",
+    "stepByStep": [
+      "Step 1: Read the number of elements N.",
+      "Step 2: Read the N integers into an array a.",
+      "Step 3: Loop with two pointers or an index i from 0 up to N / 2 - 1.",
+      "Step 4: In each step, compare a[i] with its mirrored element a[N - 1 - i].",
+      "Step 5: If a[i] != a[N - 1 - i], the array is not symmetric -> print \"NO\" and terminate.",
+      "Step 6: If the loop finishes without mismatches, print \"YES\"."
+    ],
+    "algorithm": "Two Pointers / Symmetric Array Scan",
+    "whyWorks": "Checking symmetry from both ends towards the center requires comparing at most N/2 pairs. If all pairs match, the definition of a palindrome is satisfied.",
+    "edgeCases": "N = 1 -> always a palindrome (outputs YES). Array with identical elements. Even vs. odd length arrays.",
+    "timeComplexity": "O(N) \u2014 checks at most N/2 pairs.",
+    "spaceComplexity": "O(N) \u2014 storage for the array.",
+    "code": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] a = new int[n];\n        for (int i = 0; i < n; i++) {\n            a[i] = sc.nextInt();\n        }\n        boolean isPalindrome = true;\n        for (int i = 0; i < n / 2; i++) {\n            if (a[i] != a[n - 1 - i]) {\n                isPalindrome = false;\n                break;\n            }\n        }\n        System.out.println(isPalindrome ? \"YES\" : \"NO\");\n    }\n}"
+  }
+];
+const ALL_PROBLEMS = [...MAIN_PROBLEMS, ...OPTIONAL_PROBLEMS];
+
+// ===== APPLICATION STATE =====
+const state = {
+  main: { search: '', diff: 'all', topic: 'all', status: 'all' },
+  optional: { search: '', status: 'all' },
+  solvedSet: new Set(JSON.parse(localStorage.getItem('sgu_cp_solved') || '[]')),
+  currentProblemId: null
+};
+
+// ===== INITIALIZATION =====
+document.addEventListener('DOMContentLoaded', () => {
+  populateTopicDropdown();
+  renderProblemGrid('main');
+  renderProblemGrid('optional');
+  updateProgressStats();
+  setupNavigationEvents();
+  setupKeyboardShortcuts();
+});
+
+// ===== TOPIC DROPDOWN POPULATION =====
+function populateTopicDropdown() {
+  const select = document.getElementById('topicFilterMain');
+  const topics = new Set();
+  MAIN_PROBLEMS.forEach(p => topics.add(p.topic));
+  topics.forEach(topic => {
+    const opt = document.createElement('option');
+    opt.value = topic;
+    opt.textContent = topic;
+    select.appendChild(opt);
+  });
+}
+
+// ===== NAVIGATION EVENTS =====
+function setupNavigationEvents() {
+  const toggle = document.getElementById('mobileToggle');
+  const links = document.getElementById('navLinks');
+  
+  toggle.addEventListener('click', () => {
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      links.classList.remove('open');
+    });
+  });
+
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+  });
+}
+
+function navigateToSection(sectionId) {
+  document.getElementById('problemViewSection').style.display = 'none';
+  ['home', 'statistics', 'main-contest', 'optional-problems', 'about'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = '';
+  });
+
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  const activeLink = document.querySelector(`.nav-links a[href="#${sectionId}"]`);
+  if (activeLink) activeLink.classList.add('active');
+
+  const target = document.getElementById(sectionId);
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+// ===== KEYBOARD SHORTCUTS =====
+function setupKeyboardShortcuts() {
+  document.addEventListener('keydown', (e) => {
+    if (document.getElementById('problemViewSection').style.display === 'block') {
+      if (e.key === 'Escape') {
+        closeProblemDetail();
+      } else if (e.key === 'ArrowLeft') {
+        navigateProblemOffset(-1);
+      } else if (e.key === 'ArrowRight') {
+        navigateProblemOffset(1);
+      }
+    }
+  });
+}
+
+function navigateProblemOffset(offset) {
+  if (!state.currentProblemId) return;
+  const idx = ALL_PROBLEMS.findIndex(p => p.id === state.currentProblemId);
+  if (idx !== -1) {
+    const nextIdx = idx + offset;
+    if (nextIdx >= 0 && nextIdx < ALL_PROBLEMS.length) {
+      openProblemDetail(ALL_PROBLEMS[nextIdx].id);
+    }
+  }
+}
+
+// ===== FILTER HANDLERS =====
+function handleSearch(group) {
+  const inputId = group === 'main' ? 'searchMain' : 'searchOptional';
+  state[group].search = document.getElementById(inputId).value.trim().toLowerCase();
+  renderProblemGrid(group);
+}
+
+function handleTopicFilter(group, topic) {
+  state[group].topic = topic;
+  renderProblemGrid(group);
+}
+
+function handleDiffFilter(group, diff, btn) {
+  state[group].diff = diff;
+  document.querySelectorAll(`#diffFiltersMain .filter-pill`).forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProblemGrid(group);
+}
+
+function handleStatusFilter(group, status, btn) {
+  state[group].status = status;
+  const parentId = group === 'main' ? 'statusFiltersMain' : 'statusFiltersOptional';
+  document.querySelectorAll(`#${parentId} .filter-pill`).forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProblemGrid(group);
+}
+
+// ===== RENDER PROBLEM GRIDS =====
+function renderProblemGrid(group) {
+  const isMain = group === 'main';
+  const list = isMain ? MAIN_PROBLEMS : OPTIONAL_PROBLEMS;
+  const gridId = isMain ? 'mainProblemsGrid' : 'optionalProblemsGrid';
+  const grid = document.getElementById(gridId);
+  const filter = state[group];
+
+  const filtered = list.filter(p => {
+    if (isMain) {
+      if (filter.diff !== 'all' && String(p.rating) !== filter.diff) return false;
+      if (filter.topic !== 'all' && p.topic !== filter.topic) return false;
+    }
+    const isSolved = state.solvedSet.has(p.id);
+    if (filter.status === 'solved' && !isSolved) return false;
+    if (filter.status === 'unsolved' && isSolved) return false;
+    if (filter.search) {
+      const q = filter.search;
+      const matchName = p.name.toLowerCase().includes(q);
+      const matchId = p.id.toLowerCase().includes(q);
+      const matchTopic = p.topic.toLowerCase().includes(q);
+      if (!matchName && !matchId && !matchTopic) return false;
+    }
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="no-results-box">
+        <div class="no-results-icon">🔍</div>
+        <h3>No problems found</h3>
+        <p style="color:var(--text-muted); margin-top:0.4rem;">Try adjusting your search query or reset the filters.</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(p => {
+    const isSolved = state.solvedSet.has(p.id);
+    return `
+      <div class="problem-card" id="card-${p.id}">
+        <div>
+          <div class="card-top">
+            <div class="card-order-badge">${p.order}</div>
+            <span class="card-status-badge ${isSolved ? 'solved' : 'unsolved'}">
+              ${isSolved ? '✓ Solved' : 'Unsolved'}
+            </span>
+          </div>
+
+          <div class="card-title">${escapeHtml(p.name)}</div>
+          <div class="card-cf-id">
+            <span>CF ${p.id}</span>
+            <span style="color:var(--text-dim)">•</span>
+            <span style="color:var(--text-muted); font-size:0.8rem;">${p.timeLimit}</span>
+          </div>
+
+          <div class="card-tags">
+            <span class="tag rating-tag">${p.difficulty} (${p.rating})</span>
+            <span class="tag">${escapeHtml(p.topic)}</span>
+            ${p.videoSolution && p.videoSolution !== '—' ? `<span class="tag video-tag">🎬 ${escapeHtml(p.videoSolution)}</span>` : ''}
+            ${p.sourceGroup ? `<span class="tag group-tag">👥 ${escapeHtml(p.sourceGroup)}</span>` : ''}
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <button class="btn btn-primary btn-sm" onclick="openProblemDetail('${p.id}')">View Solution</button>
+          <button class="btn-toggle-solve ${isSolved ? 'is-solved' : ''}" onclick="toggleSolvedState('${p.id}', event)">
+            ${isSolved ? '✓ Solved' : 'Mark Solved'}
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ===== TOGGLE SOLVED STATE =====
+function toggleSolvedState(id, e) {
+  if (e) e.stopPropagation();
+  if (state.solvedSet.has(id)) {
+    state.solvedSet.delete(id);
+  } else {
+    state.solvedSet.add(id);
+  }
+  localStorage.setItem('sgu_cp_solved', JSON.stringify([...state.solvedSet]));
+  renderProblemGrid('main');
+  renderProblemGrid('optional');
+  updateProgressStats();
+
+  if (state.currentProblemId === id) {
+    const detailBtn = document.getElementById('detailSolvedBtn');
+    if (detailBtn) {
+      const isSolved = state.solvedSet.has(id);
+      detailBtn.className = isSolved ? 'btn btn-primary btn-sm' : 'btn btn-outline btn-sm';
+      detailBtn.textContent = isSolved ? '✓ Solved' : 'Mark as Solved';
+    }
+  }
+}
+
+// ===== PROGRESS & DASHBOARD STATS =====
+function updateProgressStats() {
+  const total = ALL_PROBLEMS.length;
+  const solved = ALL_PROBLEMS.filter(p => state.solvedSet.has(p.id)).length;
+  const remaining = total - solved;
+  const pct = total > 0 ? Math.round((solved / total) * 100) : 0;
+
+  document.getElementById('heroTotal').textContent = total;
+  document.getElementById('heroSolved').textContent = solved;
+  document.getElementById('heroRemaining').textContent = remaining;
+  document.getElementById('heroProgressBar').style.width = pct + '%%';
+  document.getElementById('heroProgressPct').textContent = pct + '%%';
+
+  document.getElementById('statCardTotal').textContent = total;
+  document.getElementById('statCardSolved').textContent = solved;
+
+  const easy = ALL_PROBLEMS.filter(p => p.rating <= 800).length;
+  const med = ALL_PROBLEMS.filter(p => p.rating > 800 && p.rating <= 1000).length;
+  const hard = ALL_PROBLEMS.filter(p => p.rating > 1000).length;
+
+  document.getElementById('statCardEasy').textContent = easy;
+  document.getElementById('statCardMedium').textContent = med;
+  document.getElementById('statCardHard').textContent = hard;
+}
+
+// ===== PROBLEM DETAIL VIEW =====
+function openProblemDetail(id) {
+  const p = ALL_PROBLEMS.find(item => item.id === id);
+  if (!p) return;
+  state.currentProblemId = id;
+
+  ['home', 'statistics', 'main-contest', 'optional-problems', 'about'].forEach(sec => {
+    const el = document.getElementById(sec);
+    if (el) el.style.display = 'none';
+  });
+
+  const viewSec = document.getElementById('problemViewSection');
+  viewSec.style.display = 'block';
+
+  const idx = ALL_PROBLEMS.findIndex(item => item.id === id);
+  const prevP = idx > 0 ? ALL_PROBLEMS[idx - 1] : null;
+  const nextP = idx < ALL_PROBLEMS.length - 1 ? ALL_PROBLEMS[idx + 1] : null;
+  const isSolved = state.solvedSet.has(p.id);
+
+  const samplesHtml = p.samples.map((s, i) => `
+    <div class="sample-unit">
+      <div class="sample-label">Sample Input ${i + 1}:</div>
+      <pre class="sample-box">${escapeHtml(s.input)}</pre>
+      <div class="sample-label">Sample Output ${i + 1}:</div>
+      <pre class="sample-box">${escapeHtml(s.output)}</pre>
+    </div>
+  `).join('');
+
+  const stepsHtml = p.stepByStep.map(step => `
+    <div class="step-card">${escapeHtml(step)}</div>
+  `).join('');
+
+  const codeId = 'codeBlock_' + p.id;
+  const wrapperId = 'codeWrapper_' + p.id;
+  const highlighted = highlightJavaCode(p.code);
+
+  document.getElementById('problemDetailContent').innerHTML = `
+    <div class="detail-top-nav">
+      <button class="btn btn-outline btn-sm" onclick="closeProblemDetail()">&larr; Back to Problemset</button>
+      <div style="display:flex; gap:0.5rem;">
+        <button class="btn btn-outline btn-sm" ${prevP ? `onclick="openProblemDetail('${prevP.id}')"` : 'disabled style="opacity:0.4; cursor:not-allowed;"'}>&larr; Previous</button>
+        <button class="btn btn-outline btn-sm" ${nextP ? `onclick="openProblemDetail('${nextP.id}')"` : 'disabled style="opacity:0.4; cursor:not-allowed;"'}>Next &rarr;</button>
+      </div>
+    </div>
+
+    <div class="detail-header-card">
+      <div class="detail-title-row">
+        <h2 class="detail-title">${p.order}. ${escapeHtml(p.name)}</h2>
+        <button id="detailSolvedBtn" class="${isSolved ? 'btn btn-primary btn-sm' : 'btn btn-outline btn-sm'}" onclick="toggleSolvedState('${p.id}')">
+          ${isSolved ? '✓ Solved' : 'Mark as Solved'}
+        </button>
+      </div>
+      <div class="detail-cf-badge">Codeforces ${p.id}</div>
+
+      <div class="detail-meta-grid">
+        <span class="tag rating-tag">${p.difficulty} (${p.rating})</span>
+        <span class="tag">${escapeHtml(p.topic)}</span>
+        <span class="tag">⏱️ ${p.timeLimit}</span>
+        <span class="tag">💾 ${p.memoryLimit}</span>
+        ${p.videoSolution && p.videoSolution !== '—' ? `<span class="tag video-tag">🎬 Video Solution: ${escapeHtml(p.videoSolution)}</span>` : ''}
+        ${p.sourceGroup ? `<span class="tag group-tag">👥 Group: ${escapeHtml(p.sourceGroup)} (${p.groupCode})</span>` : ''}
+      </div>
+
+      <div class="detail-action-buttons">
+        <a href="${p.link}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+          Open on Codeforces ↗
+        </a>
+      </div>
+    </div>
+
+    <!-- PROBLEM STATEMENT -->
+    <div class="detail-block">
+      <div class="detail-block-title"><span>📝</span> Problem Statement</div>
+      <p style="white-space: pre-line;">${escapeHtml(p.statement)}</p>
+    </div>
+
+    <!-- INPUT & OUTPUT FORMAT -->
+    <div class="detail-block">
+      <div class="detail-block-title"><span>📥</span> Input Format</div>
+      <p style="white-space: pre-line;">${escapeHtml(p.input)}</p>
+      
+      <div class="detail-block-title" style="margin-top:1.5rem;"><span>📤</span> Output Format</div>
+      <p style="white-space: pre-line;">${escapeHtml(p.output)}</p>
+
+      <div class="detail-block-title" style="margin-top:1.5rem;"><span>🔒</span> Constraints</div>
+      <p><code>${escapeHtml(p.constraints)}</code></p>
+    </div>
+
+    <!-- OFFICIAL SAMPLES -->
+    <div class="detail-block">
+      <div class="detail-block-title"><span>📋</span> Official Samples</div>
+      ${samplesHtml}
+    </div>
+
+    <!-- SOLUTION EXPLANATION -->
+    <div class="detail-block">
+      <div class="detail-block-title"><span>💡</span> Understanding the Problem</div>
+      <p>${escapeHtml(p.understanding)}</p>
+
+      <div class="detail-block-title" style="margin-top:1.5rem;"><span>🪜</span> Step-by-Step Explanation</div>
+      ${stepsHtml}
+
+      <div class="detail-block-title" style="margin-top:1.5rem;"><span>⚙️</span> Algorithm &amp; Strategy: <span class="accent">${escapeHtml(p.algorithm)}</span></div>
+      <p><strong>Why This Algorithm Works:</strong> ${escapeHtml(p.whyWorks)}</p>
+      <p style="margin-top:0.8rem;"><strong>Important Edge Cases:</strong> ${escapeHtml(p.edgeCases)}</p>
+
+      <div class="complexity-table">
+        <div class="complexity-card">
+          <div class="complexity-title">Time Complexity</div>
+          <div class="complexity-val">${escapeHtml(p.timeComplexity)}</div>
+        </div>
+        <div class="complexity-card">
+          <div class="complexity-title">Space Complexity</div>
+          <div class="complexity-val">${escapeHtml(p.spaceComplexity)}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPLETE JAVA IMPLEMENTATION -->
+    <div class="detail-block">
+      <div class="detail-block-title"><span>☕</span> Verified Java Solution</div>
+      <div class="code-container">
+        <div class="code-header">
+          <span class="code-lang-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            Java (JDK 8+) • public class Main
+          </span>
+          <div class="code-actions">
+            <button class="copy-btn" onclick="copyJavaSolution('${codeId}', this)">
+              📋 Copy Code
+            </button>
+          </div>
+        </div>
+        <div class="code-pre-wrapper" id="${wrapperId}">
+          <pre class="code-pre" id="${codeId}">${highlighted}</pre>
+        </div>
+        <button class="code-collapse-bar" onclick="toggleCodeCollapse('${wrapperId}', this)">
+          ▲ Collapse Code
+        </button>
+      </div>
+    </div>
+
+    <div class="detail-top-nav" style="margin-top: 2rem;">
+      <button class="btn btn-outline btn-sm" onclick="closeProblemDetail()">&larr; Back to Problemset</button>
+      <div style="display:flex; gap:0.5rem;">
+        <button class="btn btn-outline btn-sm" ${prevP ? `onclick="openProblemDetail('${prevP.id}')"` : 'disabled style="opacity:0.4; cursor:not-allowed;"'}>&larr; Previous</button>
+        <button class="btn btn-outline btn-sm" ${nextP ? `onclick="openProblemDetail('${nextP.id}')"` : 'disabled style="opacity:0.4; cursor:not-allowed;"'}>Next &rarr;</button>
+      </div>
+    </div>
+  `;
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function closeProblemDetail() {
+  document.getElementById('problemViewSection').style.display = 'none';
+  ['home', 'statistics', 'main-contest', 'optional-problems', 'about'].forEach(sec => {
+    const el = document.getElementById(sec);
+    if (el) el.style.display = '';
+  });
+  state.currentProblemId = null;
+  document.getElementById('main-contest').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ===== CODE EXPAND / COLLAPSE =====
+function toggleCodeCollapse(wrapperId, btn) {
+  const wrapper = document.getElementById(wrapperId);
+  if (!wrapper) return;
+  wrapper.classList.toggle('collapsed');
+  if (wrapper.classList.contains('collapsed')) {
+    btn.textContent = '▼ Expand Code';
+  } else {
+    btn.textContent = '▲ Collapse Code';
+  }
+}
+
+// ===== COPY SOLUTION TO CLIPBOARD =====
+function copyJavaSolution(codeBlockId, btn) {
+  const el = document.getElementById(codeBlockId);
+  if (!el) return;
+  const rawText = el.textContent || el.innerText;
+  
+  const handleSuccess = () => {
+    const originalText = btn.innerHTML;
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.innerHTML = originalText;
+      btn.classList.remove('copied');
+    }, 2000);
+  };
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(rawText).then(handleSuccess).catch(() => fallbackCopy(rawText, handleSuccess));
+  } else {
+    fallbackCopy(rawText, handleSuccess);
+  }
+}
+
+function fallbackCopy(text, callback) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.top = '0';
+  ta.style.left = '0';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try {
+    document.execCommand('copy');
+    callback();
+  } catch (err) {
+    alert('Failed to copy code. Please select and copy manually.');
+  }
+  document.body.removeChild(ta);
+}
+
+// ===== SYNTAX HIGHLIGHTING (STRICT RED & WHITE PALETTE) =====
+function highlightJavaCode(code) {
+  let html = escapeHtml(code);
+
+  // Comments (must be handled first)
+  const comments = [];
+  html = html.replace(/(\/\/.*$)/gm, (match) => {
+    comments.push(match);
+    return `___CMT_${comments.length - 1}___`;
+  });
+
+  // String literals
+  const strings = [];
+  html = html.replace(/(&quot;.*?&quot;)/g, (match) => {
+    strings.push(match);
+    return `___STR_${strings.length - 1}___`;
+  });
+
+  // Keywords
+  const keywords = [
+    'import', 'public', 'class', 'static', 'void', 'int', 'long', 'boolean',
+    'char', 'for', 'while', 'if', 'else', 'return', 'new', 'break', 'continue',
+    'true', 'false', 'null'
+  ];
+  keywords.forEach(kw => {
+    const regex = new RegExp(`\\b(${kw})\\b`, 'g');
+    html = html.replace(regex, '<span class="kw">$1</span>');
+  });
+
+  // Types / Classes
+  const types = ['Scanner', 'System', 'Math', 'Arrays', 'StringBuilder', 'String', 'Integer', 'Long'];
+  types.forEach(t => {
+    const regex = new RegExp(`\\b(${t})\\b`, 'g');
+    html = html.replace(regex, '<span class="type">$1</span>');
+  });
+
+  // Standalone numbers
+  html = html.replace(/\b(\d+)\b/g, '<span class="num">$1</span>');
+
+  // Restore strings
+  strings.forEach((str, i) => {
+    html = html.replace(`___STR_${i}___`, `<span class="str">${str}</span>`);
+  });
+
+  // Restore comments
+  comments.forEach((cmt, i) => {
+    html = html.replace(`___CMT_${i}___`, `<span class="cmt">${cmt}</span>`);
+  });
+
+  return html;
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+</script>
+</body>
+</html>
